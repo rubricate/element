@@ -44,20 +44,22 @@ class Element implements Render
     public function attr($key, $value = NULL)
     {
 
-
-        if($key)
+        if(is_string($key) && $value === NULL)
         {
-            if(is_array($key) && ($value === NULL))
-            {
-                foreach($key as $k => $v) 
-                {
-                    $this->_attr[$k] = $v;
-                }
-                return $this;
-            }
-
-            $this->_attr[$key] = $value;
+            $this->_attr[] = $key;
+            return $this;
         }
+
+        if(is_array($key) && ($value === NULL))
+        {
+            foreach($key as $k => $v) 
+            {
+                $this->_attr[$k] = $v;
+            }
+            return $this;
+        }
+
+        $this->_attr[$key] = $value;
 
         return $this;
     } 
@@ -83,7 +85,14 @@ class Element implements Render
         {
             foreach ($this->_attr as $key => $value)
             {
-                $this->_append(sprintf(' %s="%s"', $key, $value));
+                $attr = sprintf(' %s="%s"', $key, $value);
+
+                if(is_numeric($key))
+                {
+                    $attr = sprintf(' %s', $value);
+                }
+
+                $this->_append($attr);
             }
 
         }
