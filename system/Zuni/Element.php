@@ -96,7 +96,7 @@ class Element implements Render
         if($this->_isAutoClose())
         {
             $this->_setAutoClose(' /');
-            $this->_stripContent();
+            $this->_removeContent();
         }
 
         $this->_result($this->_autoClose);
@@ -109,7 +109,7 @@ class Element implements Render
 
 
 
-    private function _stripContent()
+    private function _removeContent()
     {
         if(self::_getInstanceContent()->count())
         {
@@ -211,20 +211,20 @@ class Element implements Render
 
     private function _setAttrs()
     {
-         foreach (self::_getInstanceAttr() as $key => $value)
+        foreach (self::_getInstanceAttr() as $key => $value)
+        {
+            $attr = sprintf(' %s="%s"', $key, $value);
+
+            if(is_numeric($key))
             {
-                $attr = sprintf(' %s="%s"', $key, $value);
-
-                if(is_numeric($key))
-                {
-                    $attr = sprintf(' %s', $value);
-                }
-
-                $this->_result($attr);
+                $attr = sprintf(' %s', $value);
             }
-         return $this;
+
+            $this->_result($attr);
+        }
+        return $this;
     } 
-    
+
 
     private function _getInstanceAttr()
     {
