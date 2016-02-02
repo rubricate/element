@@ -4,9 +4,9 @@
  * @package     ZuniPHP
  * @author      Estefanio NS <estefanions AT gmail DOT com>
  * @link        http://4app.github.io/zuniphp
- * @copyright   2014 - 2015 
+ * @copyright   2014 - 2016 
  * 
-*/
+ */
 
 
 namespace Zuni;
@@ -16,9 +16,9 @@ use Zuni\InterfaceClass\Render;
 class Element implements Render
 {
     private $_name;
-    private $_attr = array();
-    private $_content;
-    private $_append;
+    private $_attr = NULL;
+    private $_content = NULL;
+    private $_result;
     private $_autoClose;
     private $_tagAutoClose = array( 
         'area', 'base', 'basefont', 'br', 'col', 'frame', 'hr',
@@ -28,7 +28,7 @@ class Element implements Render
 
     public function __construct($name)
     {
-        $this->_name = $name;
+        $this->_name    = $name;
         return $this;
     }
 
@@ -46,7 +46,7 @@ class Element implements Render
 
         if(is_string($key) && $value === NULL)
         {
-            $this->_attr[] = $key;
+            self::_getInstanceAttr()->append($key);
             return $this;
         }
 
@@ -54,12 +54,17 @@ class Element implements Render
         {
             foreach($key as $k => $v) 
             {
-                $this->_attr[$k] = $v;
+                self::_getInstanceAttr()->offsetSet($k, $v);
             }
             return $this;
         }
 
-        $this->_attr[$key] = $value;
+        if(is_array($value))
+        {
+            $value = implode(' ', $value);
+        }
+
+        self::_getInstanceAttr()->offsetSet($key, $value);
 
         return $this;
     } 
@@ -69,7 +74,7 @@ class Element implements Render
 
     public function add($content)
     {
-        $this->_content[] = $content;
+        self::_getInstanceContent()->append($content);
         return $this;
     } 
 
@@ -78,12 +83,12 @@ class Element implements Render
     private function _start()
     {
 
-        $this->_append('<');
-        $this->_append($this->_name);
+        $this->_result('<');
+        $this->_result($this->_name);
 
-        if(count($this->_attr))
+        if(self::_getInstanceAttr()->count())
         {
-            foreach ($this->_attr as $key => $value)
+            foreach (self::_getInstanceAttr() as $key => $value)
             {
                 $attr = sprintf(' %s="%s"', $key, $value);
 
@@ -92,7 +97,7 @@ class Element implements Render
                     $attr = sprintf(' %s', $value);
                 }
 
-                $this->_append($attr);
+                $this->_result($attr);
             }
 
         }
@@ -103,8 +108,8 @@ class Element implements Render
             $this->_stripContent();
         }
 
-        $this->_append($this->_autoClose);
-        $this->_append('>');
+        $this->_result($this->_autoClose);
+        $this->_result('>');
 
         return $this;
 
@@ -115,7 +120,7 @@ class Element implements Render
 
     private function _stripContent()
     {
-        if(isset($this->_content))
+        if(self::_getInstanceContent()->count())
         {
             $this->_content = NULL;
         }
@@ -125,30 +130,25 @@ class Element implements Render
 
 
 
-
-
-
-
-
-
-
     public function render()
     {
         $this->_start();
 
-        if(is_array($this->_content))
+        if(self::_getInstanceContent()->count())
         {
-            foreach ($this->_content as $content)
+            foreach (self::_getInstanceContent() as $content)
             {
-                $this->_toText($content);
-                $this->_toObject($content);
+                if(self::_isContent($content))
+                {
+                    $this->_result($content);
+                }
             }
 
             $this->_end();
 
         }
 
-        return implode('', $this->_append);
+        return implode('', (array) $this->_result);
     } 
 
 
@@ -158,7 +158,7 @@ class Element implements Render
 
     private function _end()
     {
-        $this->_append(sprintf('</%s>', $this->_name));
+        $this->_result(sprintf('</%s>', $this->_name));
         return $this;
     } 
 
@@ -167,34 +167,13 @@ class Element implements Render
 
 
 
-
-    private function _toText($content)
+    private function _isContent($content)
     {
-        if(is_string($content) || (is_numeric($content)))
-        {
-            $this->_append($content);
-        }
+        $isStrOrNum = (is_string($content) || (is_numeric($content)));
+        $isObject = (self::_isInstanceOfRender($content));
 
-        return $this;
+        return ($isStrOrNum || $isObject);
     } 
-
-
-
-
-
-
-
-    private function _toObject($content)
-    {
-        if(self::_isInstanceOfRender($content))
-        {
-            $this->_append($content);
-        }
-
-        return $this;
-
-    } 
-
 
 
 
@@ -207,15 +186,21 @@ class Element implements Render
 
 
 
-    private function _append($append)
+    private function _result($append)
     {
+
+        if($this->_result == NULL)
+        {
+            $this->_result  = new \ArrayObject();
+        }
+
 
         if(self::_isInstanceOfRender($append))
         {
             $append = $append->render();
         }
 
-        $this->_append[] = $append;
+        $this->_result->append($append);
 
         return $this;
     } 
@@ -231,6 +216,31 @@ class Element implements Render
     } 
 
 
+
+    private function _getInstanceAttr()
+    {
+
+        if($this->_attr == NULL)
+        {
+            $this->_attr = new \ArrayObject();
+        }
+
+        return $this->_attr;
+    } 
+
+
+
+
+    private function _getInstanceContent()
+    {
+
+        if($this->_content == NULL)
+        {
+            $this->_content  = new \ArrayObject();
+        }
+
+        return $this->_content;
+    } 
 
 
 
