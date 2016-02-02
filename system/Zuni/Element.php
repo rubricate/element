@@ -80,6 +80,8 @@ class Element implements Render
 
 
 
+
+
     private function _start()
     {
 
@@ -88,18 +90,7 @@ class Element implements Render
 
         if(self::_getInstanceAttr()->count())
         {
-            foreach (self::_getInstanceAttr() as $key => $value)
-            {
-                $attr = sprintf(' %s="%s"', $key, $value);
-
-                if(is_numeric($key))
-                {
-                    $attr = sprintf(' %s', $value);
-                }
-
-                $this->_result($attr);
-            }
-
+            self::_setAttrs();
         }
 
         if($this->_isAutoClose())
@@ -216,6 +207,24 @@ class Element implements Render
     } 
 
 
+
+
+    private function _setAttrs()
+    {
+         foreach (self::_getInstanceAttr() as $key => $value)
+            {
+                $attr = sprintf(' %s="%s"', $key, $value);
+
+                if(is_numeric($key))
+                {
+                    $attr = sprintf(' %s', $value);
+                }
+
+                $this->_result($attr);
+            }
+         return $this;
+    } 
+    
 
     private function _getInstanceAttr()
     {
