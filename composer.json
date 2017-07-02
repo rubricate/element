@@ -1,0 +1,14 @@
+{
+    "name": "rubricate/element",
+    "authors": [
+        {
+            "name": "Estefanio NS",
+            "email": "estefanions@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Rubricate\\Element\\": "Rubricate/Element/"
+        }
+    }
+}
