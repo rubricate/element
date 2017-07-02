@@ -1,257 +1,86 @@
 <?php
 
-/*
- * @package     ZuniPHP
- * @author      Estefanio NS <estefanions AT gmail DOT com>
- * @link        http://4app.github.io/zuniphp
- * @copyright   2014 - 2016 
- * 
- */
+declare(strict_types=1);
 
+namespace Rubricate\Element;
 
-namespace Zuni;
-
-use Zuni\InterfaceClass\Render;
-
-class Element implements Render
+class CreateElement implements IElement
 {
-    private $_name;
-    private $_attr = NULL;
-    private $_content = NULL;
-    private $_result;
-    private $_autoClose;
-    private $_tagAutoClose = array( 
-        'area', 'base', 'basefont', 'br', 'col', 'frame', 'hr',
-        'img', 'input', 'link', 'meta', 'param'
-    );
+    private readonly ArrElement $arr;
+    private ?string $close = null;
+    private ?string $inner = '';
 
+    public function __construct(
+        private readonly string $tagname
+    ) {
+        $this->arr = new ArrElement();
 
-    public function __construct($name)
+        if (VoidElement::isVoid($this->tagname)) {
+            $this->close = ' /';
+            $this->inner = null;
+        }
+    }
+
+    public function addChild(IGetElement $e): static
     {
-        $this->_name    = $name;
+        if ($this->inner === null) {
+            return $this;
+        }
+
+        $i = $this->arr->get('inner');
+        $i->append($e->getElement());
+
         return $this;
     }
 
-
-
-    private function _setAutoClose($autoClose)
+    public function setAttribute(string $name, mixed $value = null): static
     {
-        $this->_autoClose = $autoClose;
+        $attr = new AttributeElement($name, $value);
+        $a = $this->arr->get('attr');
+        $a->append($attr->getAttribute());
+
         return $this;
-    } 
+    }
 
-
-    public function attr($key, $value = NULL)
+    public function getElement(): string
     {
+        $e = $this->arr->get('element');
 
-        if(is_string($key) && $value === NULL)
-        {
-            self::_getInstanceAttr()->append($key);
-            return $this;
+        $e->append('<' . $this->tagname);
+
+        $this->compileAttributes();
+
+        $e->append(($this->close ?? '') . '>');
+
+        if ($this->inner !== null) {
+            $this->compileInner();
+            $e->append('</' . $this->tagname . '>');
         }
 
-        if(is_array($key) && ($value === NULL))
-        {
-            foreach($key as $k => $v) 
-            {
-                self::_getInstanceAttr()->offsetSet($k, $v);
+        $result = (array) $this->arr->get('element');
+        return implode('', $result);
+    }
+
+    private function compileAttributes(): void
+    {
+        $a = $this->arr->get('attr');
+        if ($a->count()) {
+            $e = $this->arr->get('element');
+            foreach ($a as $v) {
+                $e->append(sprintf(' %s', $v));
             }
-            return $this;
         }
+    }
 
-        if(is_array($value))
-        {
-            $value = implode(' ', $value);
-        }
-
-        self::_getInstanceAttr()->offsetSet($key, $value);
-
-        return $this;
-    } 
-
-
-
-
-    public function add($content)
+    private function compileInner(): void
     {
-        self::_getInstanceContent()->append($content);
-        return $this;
-    } 
-
-
-
-
-
-    private function _start()
-    {
-
-        $this->_result('<');
-        $this->_result($this->_name);
-
-        if(self::_getInstanceAttr()->count())
-        {
-            self::_setAttrs();
-        }
-
-        if($this->_isAutoClose())
-        {
-            $this->_setAutoClose(' /');
-            $this->_removeContent();
-        }
-
-        $this->_result($this->_autoClose);
-        $this->_result('>');
-
-        return $this;
-
-    } 
-
-
-
-
-    private function _removeContent()
-    {
-        if(self::_getInstanceContent()->count())
-        {
-            $this->_content = NULL;
-        }
-        return $this;
-    } 
-
-
-
-
-    public function render()
-    {
-        $this->_start();
-
-        if(self::_getInstanceContent()->count())
-        {
-            foreach (self::_getInstanceContent() as $content)
-            {
-                if(self::_isContent($content))
-                {
-                    $this->_result($content);
-                }
+        $i = $this->arr->get('inner');
+        if ($i->count()) {
+            $e = $this->arr->get('element');
+            foreach ($i as $content) {
+                $e->append($content);
             }
-
-            $this->_end();
-
         }
-
-        return implode('', (array) $this->_result);
-    } 
-
-
-
-
-
-
-    private function _end()
-    {
-        $this->_result(sprintf('</%s>', $this->_name));
-        return $this;
-    } 
-
-
-
-
-
-
-    private function _isContent($content)
-    {
-        $isStrOrNum = (is_string($content) || (is_numeric($content)));
-        $isObject = (self::_isInstanceOfRender($content));
-
-        return ($isStrOrNum || $isObject);
-    } 
-
-
-
-
-    private function _isAutoClose()
-    {
-        return (in_array($this->_name, $this->_tagAutoClose));
-    } 
-
-
-
-
-    private function _result($append)
-    {
-
-        if($this->_result == NULL)
-        {
-            $this->_result  = new \ArrayObject();
-        }
-
-
-        if(self::_isInstanceOfRender($append))
-        {
-            $append = $append->render();
-        }
-
-        $this->_result->append($append);
-
-        return $this;
-    } 
-
-
-
-
-
-
-    private function _isInstanceOfRender($instance)
-    {
-        return ($instance instanceof Render);
-    } 
-
-
-
-
-    private function _setAttrs()
-    {
-        foreach (self::_getInstanceAttr() as $key => $value)
-        {
-            $attr = sprintf(' %s="%s"', $key, $value);
-
-            if(is_numeric($key))
-            {
-                $attr = sprintf(' %s', $value);
-            }
-
-            $this->_result($attr);
-        }
-        return $this;
-    } 
-
-
-    private function _getInstanceAttr()
-    {
-
-        if($this->_attr == NULL)
-        {
-            $this->_attr = new \ArrayObject();
-        }
-
-        return $this->_attr;
-    } 
-
-
-
-
-    private function _getInstanceContent()
-    {
-
-        if($this->_content == NULL)
-        {
-            $this->_content  = new \ArrayObject();
-        }
-
-        return $this->_content;
-    } 
-
-
-
-}    
+    }
+}
 
