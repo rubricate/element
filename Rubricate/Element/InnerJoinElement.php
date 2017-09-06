@@ -9,10 +9,10 @@
 
 namespace Rubricate\Element;
 
-use Rubricate\Element\IInnerElement;
+use Rubricate\Element\IGetInnerElement;
 use Rubricate\Element\IGetElement;
 
-class InnerJoinElement implements IInnerElement
+class InnerJoinElement implements IGetInnerElement
 {
 
     private $inner;
