@@ -90,7 +90,11 @@ class CreateElement implements IElement
 
         self::setAttrs();
 
-        if(in_array($this->tagname, TagAutoCloseConfigElement::getAll() ))
+        if(
+            in_array(
+                $this->tagname,
+                TagAutoCloseConfigElement::getAll()
+            ) )
         {
             $this->inner   = NULL;
             $autoClose = ' /';
