@@ -15,4 +15,3 @@ interface IAddInnerJoinElement
     public function addInnerJoin(IGetElement $innerObj);
 }
 
-

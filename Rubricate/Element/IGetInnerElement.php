@@ -14,5 +14,3 @@ interface IGetInnerElement
     public function getInner();
 }
 
-
-

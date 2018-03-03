@@ -13,20 +13,16 @@ use Rubricate\Element\IAttribute;
 
 
 
-
 class AttributeElement implements IAttributeElement
 {
-
     private $attr;
 
 
 
-    public function __construct($key, $value = NULL)
+    public function __construct($key, $value = null)
     {
         self::_set($key, $value);
     }
-
-
 
 
 
@@ -37,13 +33,10 @@ class AttributeElement implements IAttributeElement
 
 
 
-
     private function _set($key, $value)
     {
         $this->attr = self::_getAttributeKeyValue($key, $value); 
     } 
-
-
 
 
 
@@ -57,7 +50,5 @@ class AttributeElement implements IAttributeElement
 
 
 
-
 }    
-
 

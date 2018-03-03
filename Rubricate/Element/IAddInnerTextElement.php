@@ -15,5 +15,3 @@ interface IAddInnerTextElement
     public function addInnerText($innerStr);
 }
 
-
-

@@ -13,12 +13,9 @@ use Rubricate\Element\Config\TagAutoCloseConfigElement;
 
 class CreateElement implements IElement
 {
-
     private $tagname;
     private $propertyObj;
     
-
-
 
 
     public function __construct($tagname)
@@ -27,8 +24,6 @@ class CreateElement implements IElement
         $this->propertyObj = new PropertyObjectElement();
         return $this;
     }
-
-
 
 
 
@@ -41,19 +36,15 @@ class CreateElement implements IElement
 
 
 
-
-
     public function addInnerJoin(IGetElement $inner)
     {
-        self::addInnerText( $inner->getElement() );
+        self::addInnerText($inner->getElement());
         return $this;
     } 
 
 
 
-
-
-    public function setAttribute($name, $value = NULL)
+    public function setAttribute($name, $value = null)
     {
         $attr = new AttributeElement($name, $value);
 
@@ -65,8 +56,6 @@ class CreateElement implements IElement
 
 
 
-
-
     public function getElement()
     {
         self::start();
@@ -74,8 +63,6 @@ class CreateElement implements IElement
         $e = (array) $this->propertyObj->getSingleton('element');
         return implode('', $e);
     } 
-
-
 
 
 
@@ -90,13 +77,12 @@ class CreateElement implements IElement
 
         self::setAttrs();
 
-        if(
-            in_array(
-                $this->tagname,
-                TagAutoCloseConfigElement::getAll()
-            ) )
-        {
-            $this->inner   = NULL;
+        if(in_array(
+            $this->tagname,
+            TagAutoCloseConfigElement::getAll()
+        ) 
+        ) {
+            $this->inner   = null;
             $autoClose = ' /';
         }
 
@@ -109,19 +95,15 @@ class CreateElement implements IElement
 
 
 
-
-
-
     private function inner()
     {
         $i = $this->propertyObj->getSingleton('inner');
 
-        if($i->count()) 
-        {
+        if($i->count()) {
+
             $e = $this->propertyObj->getSingleton('element');
 
-            foreach ($i as $inner) 
-            {
+            foreach ($i as $inner) {
                 $e->append($inner);
             }
 
@@ -133,18 +115,15 @@ class CreateElement implements IElement
 
 
 
-
-
     private function setAttrs()
     {
         $a = $this->propertyObj->getSingleton('attr');
 
-        if($a->count())
-        {
+        if($a->count()) {
+
             $e = $this->propertyObj->getSingleton('element');
 
-            foreach ($a as $propertyValue)
-            {
+            foreach ($a as $propertyValue) {
                 $attr = sprintf(' %s', $propertyValue);
 
                 $e->append($attr);
@@ -153,8 +132,6 @@ class CreateElement implements IElement
         }
         return $this;
     } 
-
-
 
 
 

@@ -15,4 +15,3 @@ interface IPropertyObjectElement
     public function getSingleton($property);
 }    
 
-

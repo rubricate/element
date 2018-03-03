@@ -17,10 +17,10 @@ $opt[] = 'dolor';
 
 foreach ($opt as $value => $description)
 {
-   $option = new CreateElement('option');
-   $option->setAttribute('value', $value);
-   $option->addInnerText($description);
-   $select->addInnerJoin($option);
+    $option = new CreateElement('option');
+    $option->setAttribute('value', $value);
+    $option->addInnerText($description);
+    $select->addInnerJoin($option);
 }
 
 
