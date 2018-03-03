@@ -14,5 +14,3 @@ interface IGetElement
     public function getElement();
 }
 
-
-

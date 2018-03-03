@@ -14,4 +14,3 @@ interface IAttributeElement
     public function getAttribute();
 }
 
-

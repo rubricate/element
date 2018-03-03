@@ -14,8 +14,9 @@ use Rubricate\Element\InnerElement;
 
 class InnerTextElement implements IInnerElement
 {
-
     private $inner;
+    
+
 
     public function __construct($inner)
     {

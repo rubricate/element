@@ -14,8 +14,8 @@ use Rubricate\Element\IGetElement;
 
 class InnerJoinElement implements IGetInnerElement
 {
-
     private $inner;
+
 
 
     public function __construct(IGetElement $inner)
@@ -33,6 +33,4 @@ class InnerJoinElement implements IGetInnerElement
 
 
 }    
-
-
 

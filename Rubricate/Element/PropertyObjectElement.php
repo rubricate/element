@@ -14,16 +14,17 @@ use ArrayObject;
 class PropertyObjectElement implements IPropertyObjectElement
 {
 
-    private $attr    = NULL;
-    private $inner   = NULL;
-    private $element = NULL;
+    private $attr    = null;
+    private $inner   = null;
+    private $element = null;
 
-    public function __construct() { }
+    public function __construct() 
+    { 
+    }
 
     public function getSingleton($classProperty)
     {
-        if(!$this->$classProperty)
-        {
+        if(!$this->$classProperty) {
             $this->$classProperty = new ArrayObject();
         }
 
@@ -31,6 +32,6 @@ class PropertyObjectElement implements IPropertyObjectElement
     } 
 
 
-}    
 
+}    
 

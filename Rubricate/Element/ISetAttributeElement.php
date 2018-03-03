@@ -14,5 +14,3 @@ interface ISetAttributeElement
     public function setAttribute($name, $value);
 }
 
-
-
