@@ -4,14 +4,16 @@
  * @package     RubricatePHP
  * @author      Estefanio NS <estefanions AT gmail DOT com>
  * @link        https://github.com/rubricate/element 
- * @copyright   2014 - 2017 
+ * @copyright   2018
  */
 
 namespace Rubricate\Element;
 
 
-interface IAddInnerTextElement
+interface IAddChildElement
 {
-    public function addInnerText($innerStr);
+    public function addChild(IGetElement $e);
 }
+
+
 

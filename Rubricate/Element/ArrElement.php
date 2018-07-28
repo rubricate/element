@@ -4,14 +4,14 @@
  * @package     RubricatePHP
  * @author      Estefanio NS <estefanions AT gmail DOT com>
  * @link        https://github.com/rubricate/element 
- * @copyright   2017 
+ * @copyright   2017 - 2018
  */
 
 namespace Rubricate\Element; 
 
 use ArrayObject;
 
-class PropertyObjectElement implements IPropertyObjectElement
+class ArrElement implements IArrElement
 {
 
     private $attr    = null;
@@ -22,13 +22,13 @@ class PropertyObjectElement implements IPropertyObjectElement
     { 
     }
 
-    public function getSingleton($classProperty)
+    public function get($key)
     {
-        if(!$this->$classProperty) {
-            $this->$classProperty = new ArrayObject();
+        if(!$this->$key) {
+            $this->$key = new ArrayObject();
         }
 
-        return $this->$classProperty;
+        return $this->$key;
     } 
 
 
