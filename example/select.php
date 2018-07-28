@@ -5,7 +5,7 @@ require '../vendor/autoload.php';
 
 
 use Rubricate\Element\CreateElement;
-
+use Rubricate\Element\StrElement;
 
 $select = new CreateElement('select');
 $select->setAttribute('name', 'latim');
@@ -19,8 +19,8 @@ foreach ($opt as $value => $description)
 {
     $option = new CreateElement('option');
     $option->setAttribute('value', $value);
-    $option->addInnerText($description);
-    $select->addInnerJoin($option);
+    $option->addChild(new StrElement($description));
+    $select->addChild($option);
 }
 
 

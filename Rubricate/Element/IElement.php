@@ -10,8 +10,7 @@
 namespace Rubricate\Element;
 
 interface IElement extends 
-    IGetElement, ISetAttributeElement,
-    IAddInnerTextElement, IAddInnerJoinElement
+    IGetElement, ISetAttributeElement, IAddChildElement
 {
 
 }

@@ -22,8 +22,8 @@ $formContainer = new CreateElement('form');
 $formContainer->setAttribute('action', 'localhost/example/form-action.php');
 $formContainer->setAttribute('method', 'post');
 
-$formContainer->addInnerJoin($inputFirstName);
-$formContainer->addInnerJoin($inputSubmit);
+$formContainer->addChild($inputFirstName);
+$formContainer->addChild($inputSubmit);
 
 
 echo $formContainer->getElement();

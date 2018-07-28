@@ -4,7 +4,7 @@
  * @package     RubricatePHP
  * @author      Estefanio NS <estefanions AT gmail DOT com>
  * @link        https://github.com/rubricate/element 
- * @copyright   2014 - 2017 
+ * @copyright   2014 - 2018 
  */
 
 namespace Rubricate\Element;
@@ -14,31 +14,26 @@ use Rubricate\Element\Config\TagAutoCloseConfigElement;
 class CreateElement implements IElement
 {
     private $tagname;
-    private $propertyObj;
+    private $arr;
+    private $close;
     
 
 
     public function __construct($tagname)
     {
         $this->tagname = $tagname;
-        $this->propertyObj = new PropertyObjectElement();
+        $this->arr     = new ArrElement();
+
         return $this;
     }
 
 
 
-    public function addInnerText($inner)
+    public function addChild(IGetElement $e)
     {
-        $i = $this->propertyObj->getSingleton('inner');
-        $i->append($inner);
-        return $this;
-    } 
+        $i = $this->arr->get('inner');
+        $i->append($e->getElement());
 
-
-
-    public function addInnerJoin(IGetElement $inner)
-    {
-        self::addInnerText($inner->getElement());
         return $this;
     } 
 
@@ -48,7 +43,7 @@ class CreateElement implements IElement
     {
         $attr = new AttributeElement($name, $value);
 
-        $a = $this->propertyObj->getSingleton('attr');
+        $a = $this->arr->get('attr');
         $a->append($attr->getAttribute());
 
         return $this;
@@ -60,7 +55,8 @@ class CreateElement implements IElement
     {
         self::start();
         self::inner();
-        $e = (array) $this->propertyObj->getSingleton('element');
+        $e = (array) $this->arr->get('element');
+
         return implode('', $e);
     } 
 
@@ -68,9 +64,8 @@ class CreateElement implements IElement
 
     private function start()
     {
-        $autoClose = '';
 
-        $e = $this->propertyObj->getSingleton('element');
+        $e = $this->arr->get('element');
 
         $e->append('<');
         $e->append($this->tagname);
@@ -82,11 +77,11 @@ class CreateElement implements IElement
             TagAutoCloseConfigElement::getAll()
         ) 
         ) {
-            $this->inner   = null;
-            $autoClose = ' /';
+            $this->inner = null;
+            $this->close = ' /';
         }
 
-        $e->append($autoClose);
+        $e->append($this->close);
         $e->append('>');
 
         return $this;
@@ -97,11 +92,11 @@ class CreateElement implements IElement
 
     private function inner()
     {
-        $i = $this->propertyObj->getSingleton('inner');
+        $i = $this->arr->get('inner');
 
         if($i->count()) {
 
-            $e = $this->propertyObj->getSingleton('element');
+            $e = $this->arr->get('element');
 
             foreach ($i as $inner) {
                 $e->append($inner);
@@ -117,14 +112,14 @@ class CreateElement implements IElement
 
     private function setAttrs()
     {
-        $a = $this->propertyObj->getSingleton('attr');
+        $a = $this->arr->get('attr');
 
         if($a->count()) {
 
-            $e = $this->propertyObj->getSingleton('element');
+            $e = $this->arr->get('element');
 
-            foreach ($a as $propertyValue) {
-                $attr = sprintf(' %s', $propertyValue);
+            foreach ($a as $v) {
+                $attr = sprintf(' %s', $v);
 
                 $e->append($attr);
             }
