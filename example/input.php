@@ -1,16 +1,13 @@
 <?php 
 
 
-require '../vendor/autoload.php';
-
-
 use Rubricate\Element\CreateElement;
 
-$inputFirstName = new CreateElement('input');
-$inputFirstName->setAttribute('type', 'text');
-$inputFirstName->setAttribute('name', 'firstName');
-$inputFirstName->setAttribute('class', 'form');
-$inputFirstName->setAttribute('required');
+$firstName = new CreateElement('input');
+$firstName->setAttribute('type', 'text');
+$firstName->setAttribute('name', 'firstName');
+$firstName->setAttribute('class', 'form');
+$firstName->setAttribute('required');
 
 echo $inputFirstName->getElement();
 

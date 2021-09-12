@@ -1,9 +1,6 @@
 <?php 
 
 
-require '../vendor/autoload.php';
-
-
 use Rubricate\Element\CreateElement;
 use Rubricate\Element\StrElement;
 
@@ -15,11 +12,11 @@ $opt[] = 'lorem';
 $opt[] = 'ipsum';
 $opt[] = 'dolor';
 
-foreach ($opt as $value => $description)
+foreach ($opt as $value => $text)
 {
     $option = new CreateElement('option');
     $option->setAttribute('value', $value);
-    $option->addChild(new StrElement($description));
+    $option->addChild(new StrElement($text));
     $select->addChild($option);
 }
 
