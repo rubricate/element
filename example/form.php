@@ -1,37 +1,38 @@
 <?php 
 
 
-require '../vendor/autoload.php';
-
-
 use Rubricate\Element\CreateElement;
 
+$name = new CreateElement('input');
+$name->setAttribute('type', 'text');
+$name->setAttribute('name', 'name');
+$name->setAttribute('required');
 
-$inputFirstName = new CreateElement('input');
-$inputFirstName->setAttribute('type', 'text');
-$inputFirstName->setAttribute('name', 'firstName');
-$inputFirstName->setAttribute('class', 'form');
-$inputFirstName->setAttribute('required');
+$email = new CreateElement('input');
+$email->setAttribute('type', 'email');
+$email->setAttribute('name', 'email');
+$email->setAttribute('required');
 
-$inputSubmit = new CreateElement('input');
-$inputSubmit->setAttribute('type',  'submit');
-$inputSubmit->setAttribute('name',  'submit');
-$inputSubmit->setAttribute('value', 'ok');
+$submit = new CreateElement('input');
+$submit->setAttribute('type',  'submit');
+$submit->setAttribute('name',  'submit');
+$submit->setAttribute('value', 'ok');
 
-$formContainer = new CreateElement('form');
-$formContainer->setAttribute('action', 'localhost/example/form-action.php');
-$formContainer->setAttribute('method', 'post');
+$form = new CreateElement('form');
+$form->setAttribute('action', 'process.php');
+$form->setAttribute('method', 'post');
 
-$formContainer->addChild($inputFirstName);
-$formContainer->addChild($inputSubmit);
+$form->addChild($name);
+$form->addChild($email);
+$form->addChild($submit);
 
+echo $form->getElement();
 
-echo $formContainer->getElement();
-/*
-  <form action="localhost/example/form-action.php" method="post">
-    <input type="text" name="firstName" class="form" required />
-    <input name="submit" type="submit" value="ok" />
-  </form>
+/* 
+    <form action="process.php" method="post">
+        <input type="text" name="name" required />
+        <input type="email" name="email" required />
+        <input type="submit" name="submit" value="ok" />
+    </form>
 */
-
 
