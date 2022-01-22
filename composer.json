@@ -1,11 +1,26 @@
 {
     "name": "rubricate/element",
+    "description": "Assists in creating elements: HTML and XML",
     "authors": [
         {
-            "name": "Estefanio NS",
+            "name": "Estefanio N Santos",
             "email": "estefanions@gmail.com"
         }
     ],
+    "keywords": [
+        "rubricateframework",
+        "rubricatephp",
+        "element",
+        "html",
+        "xml"
+    ],
+    "support": {
+        "docs"   : "https://rubricate.github.io/components/element",
+        "source" : "https://github.com/rubricate/element"
+    },
+    "require": {
+        "php": "^7.1"
+    },
     "autoload": {
         "psr-4": {
             "Rubricate\\Element\\": "Rubricate/Element/"
