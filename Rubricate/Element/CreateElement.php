@@ -1,12 +1,5 @@
 <?php
 
-/*
- * @package     RubricatePHP
- * @author      Estefanio NS <estefanions AT gmail DOT com>
- * @link        https://github.com/rubricate/element 
- * @copyright   2014 - 2018 
- */
-
 namespace Rubricate\Element;
 
 use Rubricate\Element\Config\TagAutoCloseConfigElement;
@@ -16,8 +9,6 @@ class CreateElement implements IElement
     private $tagname;
     private $arr;
     private $close;
-    
-
 
     public function __construct($tagname)
     {
@@ -27,8 +18,6 @@ class CreateElement implements IElement
         return $this;
     }
 
-
-
     public function addChild(IGetElement $e)
     {
         $i = $this->arr->get('inner');
@@ -36,8 +25,6 @@ class CreateElement implements IElement
 
         return $this;
     } 
-
-
 
     public function setAttribute($name, $value = null)
     {
@@ -49,8 +36,6 @@ class CreateElement implements IElement
         return $this;
     } 
 
-
-
     public function getElement()
     {
         self::start();
@@ -60,11 +45,8 @@ class CreateElement implements IElement
         return implode('', $e);
     } 
 
-
-
     private function start()
     {
-
         $e = $this->arr->get('element');
 
         $e->append('<');
@@ -88,8 +70,6 @@ class CreateElement implements IElement
 
     } 
 
-
-
     private function inner()
     {
         $i = $this->arr->get('inner');
@@ -108,8 +88,6 @@ class CreateElement implements IElement
         return $this;
     } 
 
-
-
     private function setAttrs()
     {
         $a = $this->arr->get('attr');
@@ -127,8 +105,6 @@ class CreateElement implements IElement
         }
         return $this;
     } 
-
-
 
 }    
 
