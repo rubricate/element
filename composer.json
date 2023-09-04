@@ -19,7 +19,7 @@
         "source" : "https://github.com/rubricate/element"
     },
     "require": {
-        "php": "^7.1"
+        "php": "^5.3"
     },
     "autoload": {
         "psr-4": {
