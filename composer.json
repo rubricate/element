@@ -1,6 +1,7 @@
 {
     "name": "rubricate/element",
     "description": "Assists in creating elements: HTML and XML",
+    "license": "MIT",
     "authors": [
         {
             "name": "Estefanio N Santos",
