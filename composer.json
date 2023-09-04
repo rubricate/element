@@ -7,6 +7,9 @@
             "email": "estefanions@gmail.com"
         }
     ],
+    "require": {
+        "php": ">=5.3"
+    },
     "keywords": [
         "rubricateframework",
         "rubricatephp",
