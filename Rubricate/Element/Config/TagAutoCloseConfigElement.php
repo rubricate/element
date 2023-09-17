@@ -1,5 +1,7 @@
 <?php 
 
+declare(strict_types=1);
+
 namespace Rubricate\Element\Config; 
 
 class TagAutoCloseConfigElement
@@ -12,7 +14,7 @@ class TagAutoCloseConfigElement
         'meta', 'param'
     );
 
-    public static function getAll()
+    public static function getAll(): array
     {
         return self::$tag;
     } 
