@@ -1,5 +1,7 @@
 <?php 
 
+declare(strict_types=1);
+
 namespace Rubricate\Element;
 
 use Rubricate\Element\IAttribute;
@@ -13,7 +15,7 @@ class AttributeElement implements IAttributeElement
         self::_set($key, $value);
     }
 
-    public function getAttribute()
+    public function getAttribute(): string
     {
         return  $this->attr;
     } 
