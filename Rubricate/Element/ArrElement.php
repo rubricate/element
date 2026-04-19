@@ -21,7 +21,7 @@ class ArrElement implements IArrElement
             throw new Exception("'Only Allowed Key: attr, inner AND element'");
         }
 
-        return (!$this->$key)? new ArrayObject: $this->$key;
+        return $this->$key ?? ($this->$key = new ArrayObject());
     } 
 
 }    
