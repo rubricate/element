@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Rubricate\Element;
 
-use Rubricate\Element\Config\TagAutoCloseConfigElement;
-
 class CreateElement implements IElement
 {
     private $tagname;
@@ -58,7 +56,7 @@ class CreateElement implements IElement
 
         if(in_array(
             $this->tagname,
-            TagAutoCloseConfigElement::getAll()
+            VoidElement::getAll()
         ) 
         ) {
             $this->inner = null;
