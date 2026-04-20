@@ -4,6 +4,6 @@ namespace Rubricate\Element;
 
 interface IAddChildElement
 {
-    public function addChild(IGetElement $e);
+    public function addChild(IGetElement $e): self;
 }
 
