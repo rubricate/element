@@ -4,34 +4,26 @@ declare(strict_types=1);
 
 namespace Rubricate\Element;
 
-use Rubricate\Element\IAttribute;
-
 class AttributeElement implements IAttributeElement
 {
-    private $attr;
+    private readonly string $attr;
 
-    public function __construct($key, $value = null)
+    public function __construct(string $key, mixed $value = null)
     {
-        self::_set($key, $value);
+        $this->attr = $this->resolveAttribute($key, $value);
     }
 
     public function getAttribute(): string
     {
-        return  $this->attr;
+        return $this->attr;
     } 
 
-    private function _set($key, $value)
+    private function resolveAttribute(string $key, mixed $value): string
     {
-        $this->attr = self::_getAttributeKeyValue($key, $value); 
+        if ($value === null) {
+            return $key;
+        }
+
+        return sprintf('%s="%s"', $key, (string) $value);
     } 
-
-    private function _getAttributeKeyValue($key, $value)
-    {
-        $isNull    = (is_null($value));
-        $keyValue  = sprintf('%s="%s"', $key, $value);
-
-        return ($isNull)? $key: $keyValue;
-    } 
-
-}    
-
+}

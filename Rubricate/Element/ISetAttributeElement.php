@@ -4,6 +4,6 @@ namespace Rubricate\Element;
 
 interface ISetAttributeElement
 {
-    public function setAttribute($name, $value);
+    public function setAttribute(string $name, mixed $value = null): self;
 }
 
