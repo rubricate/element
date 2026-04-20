@@ -4,6 +4,6 @@ namespace Rubricate\Element;
 
 interface IArrElement
 {
-    public function get($key);
+    public function get($key): object;
 }    
 

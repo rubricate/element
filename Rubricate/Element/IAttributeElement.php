@@ -4,6 +4,6 @@ namespace Rubricate\Element;
 
 interface IAttributeElement
 {
-    public function getAttribute();
+    public function getAttribute(): string;
 }
 
