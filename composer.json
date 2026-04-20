@@ -1,6 +1,7 @@
 {
     "name": "rubricate/element",
     "description": "Assists in creating elements: HTML and XML",
+    "type": "library",
     "license": "MIT",
     "authors": [
         {
@@ -9,22 +10,39 @@
         }
     ],
     "require": {
-        "php": ">=7.2"
+        "php": ">=8.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0",
+        "phpstan/phpstan": "^1.10"
     },
     "keywords": [
-        "rubricateframework",
         "rubricatephp",
+        "rubricate-component",
         "element",
         "html",
-        "xml"
+        "xml",
+        "fluent-interface",
+        "html-builder",
+        "markup-generator",
+        "oop",
+        "clean-code"
     ],
     "support": {
-        "docs"   : "https://rubricate.github.io/components/element",
-        "source" : "https://github.com/rubricate/element"
+        "docs": "https://rubricate.github.io/components/element",
+        "source": "https://github.com/rubricate/element",
+        "issues": "https://github.com/rubricate/element/issues"
     },
     "autoload": {
         "psr-4": {
             "Rubricate\\Element\\": "Rubricate/Element/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true,
+        "platform": {
+            "php": "8.2"
         }
     }
 }
