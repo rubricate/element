@@ -6,30 +6,37 @@ namespace Rubricate\Element;
 
 class CreateElement implements IElement
 {
-    private $tagname;
-    private $arr;
-    private $close;
+    private readonly string $tagname;
+    private readonly ArrElement $arr;
+    private ?string $close = null;
+    private ?string $inner = '';
 
-    public function __construct($tagname)
+    public function __construct(string $tagname)
     {
         $this->tagname = $tagname;
         $this->arr     = new ArrElement();
 
-        return $this;
+        if (VoidElement::isVoid($tagname)) {
+            $this->close = ' /';
+            $this->inner = null;
+        }
     }
 
-    public function addChild(IGetElement $e): object
+    public function addChild(IGetElement $e): self
     {
+        if ($this->inner === null) {
+            return $this;
+        }
+
         $i = $this->arr->get('inner');
         $i->append($e->getElement());
 
         return $this;
     } 
 
-    public function setAttribute($name, $value = null): object
+    public function setAttribute(string $name, mixed $value = null): self
     {
         $attr = new AttributeElement($name, $value);
-
         $a = $this->arr->get('attr');
         $a->append($attr->getAttribute());
 
@@ -38,73 +45,43 @@ class CreateElement implements IElement
 
     public function getElement(): string
     {
-        self::start();
-        self::inner();
-        $e = (array) $this->arr->get('element');
-
-        return implode('', $e);
-    } 
-
-    private function start(): object
-    {
         $e = $this->arr->get('element');
 
-        $e->append('<');
-        $e->append($this->tagname);
+        $e->append('<' . $this->tagname);
 
-        self::setAttrs();
+        $this->compileAttributes();
 
-        if(in_array(
-            $this->tagname,
-            VoidElement::getAll()
-        ) 
-        ) {
-            $this->inner = null;
-            $this->close = ' /';
-        }
+        $e->append(($this->close ?? '') . '>');
 
-        $e->append($this->close);
-        $e->append('>');
-
-        return $this;
-
-    } 
-
-    private function inner(): object
-    {
-        $i = $this->arr->get('inner');
-
-        if($i->count()) {
-
-            $e = $this->arr->get('element');
-
-            foreach ($i as $inner) {
-                $e->append($inner);
-            }
-
+        if ($this->inner !== null) {
+            $this->compileInner();
             $e->append('</' . $this->tagname . '>');
         }
 
-        return $this;
+        $result = (array) $this->arr->get('element');
+        return implode('', $result);
     } 
 
-    private function setAttrs(): object
+    private function compileAttributes(): void
     {
         $a = $this->arr->get('attr');
-
-        if($a->count()) {
-
+        if ($a->count()) {
             $e = $this->arr->get('element');
-
             foreach ($a as $v) {
-                $attr = sprintf(' %s', $v);
-
-                $e->append($attr);
+                $e->append(sprintf(' %s', $v));
             }
-
         }
-        return $this;
-    } 
+    }
 
-}    
+    private function compileInner(): void
+    {
+        $i = $this->arr->get('inner');
+        if ($i->count()) {
+            $e = $this->arr->get('element');
+            foreach ($i as $content) {
+                $e->append($content);
+            }
+        }
+    }
+}
 
