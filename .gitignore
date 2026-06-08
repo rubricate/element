@@ -1,49 +1,50 @@
-#
-*.vim
+# Local Environment & Development
+# ----------------------------------------  
 tags
+dev.*
+*.vim
+*.dev.*
+*.dev
+*.dev/
 .vimspector.json
 
-# test
+# Local environment configuration
 # ----------------------------------------  
-*.test.*
+.env
+.env.local
 
-# Compiled source #
+# PHP Ecosystem & Dependencies
 # ----------------------------------------  
-*.com
-*.class
-*.dll
-*.exe
-*.o
-*.so
+vendor/
 
-# Temporary files #
+# PHPUnit test runner cache
 # ----------------------------------------  
-*.swp
-*.swo
-*~
+.phpunit.result.cache
 
-# Packages #
+# Static analysis cache
 # ----------------------------------------  
-*.7z
-*.dmg
-*.gz
-*.iso
-*.jar
-*.rar
-*.tar
-*.zip
+.phpstan.cache/
+.psalm.cache/
 
-# Logs #
+# IDEs, Editors & OS Metadata
 # ----------------------------------------  
-*.log
+# JetBrains PhpStorm / IntelliJ
+.idea/
+*.iml
 
-# OS generated files #
+# Visual Studio Code
+# ----------------------------------------  
+.vscode/
+
+# Operating System files
 # ----------------------------------------  
 .DS_Store*
 ehthumbs.db
 Icon?
 Thumbs.db
 
-# Editor files #
+# Temporary files #
 # ----------------------------------------  
-.vscode
+*.swp
+*.swo
+*~
