@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 declare(strict_types=1);
 
@@ -6,19 +6,18 @@ namespace Rubricate\Element;
 
 class StrElement implements IGetElement
 {
-    private string $str;
     private array $args = [];
 
-    public function __construct(string $str = '')
-    {
-        $this->str = $str;
+    public function __construct(
+        private string $str = ''
+    ) {
     }
 
-    public function add(mixed $arg): self
+    public function add(mixed $arg): static
     {
         $this->args[] = $arg;
         return $this;
-    } 
+    }
 
     public function getElement(): string
     {
@@ -31,5 +30,6 @@ class StrElement implements IGetElement
         }
 
         return vsprintf($this->str, $this->args);
-    } 
+    }
 }
+
