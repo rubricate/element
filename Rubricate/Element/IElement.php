@@ -1,10 +1,10 @@
-<?php 
+<?php
+
+declare(strict_types=1);
 
 namespace Rubricate\Element;
 
-interface IElement extends 
-    IGetElement, ISetAttributeElement, IAddChildElement
+interface IElement extends IGetElement, ISetAttributeElement, IAddChildElement
 {
-
 }
 
