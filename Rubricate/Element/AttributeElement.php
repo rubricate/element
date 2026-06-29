@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 declare(strict_types=1);
 
@@ -6,17 +6,18 @@ namespace Rubricate\Element;
 
 class AttributeElement implements IAttributeElement
 {
-    private readonly string $attr;
-
-    public function __construct(string $key, mixed $value = null)
-    {
+    public function __construct(
+        string $key,
+        mixed $value = null,
+        private readonly string $attr = ''
+    ) {
         $this->attr = $this->resolveAttribute($key, $value);
     }
 
     public function getAttribute(): string
     {
         return $this->attr;
-    } 
+    }
 
     private function resolveAttribute(string $key, mixed $value): string
     {
@@ -25,5 +26,6 @@ class AttributeElement implements IAttributeElement
         }
 
         return sprintf('%s="%s"', $key, (string) $value);
-    } 
+    }
 }
+
