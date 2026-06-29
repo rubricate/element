@@ -6,23 +6,22 @@ namespace Rubricate\Element;
 
 class CreateElement implements IElement
 {
-    private readonly string $tagname;
     private readonly ArrElement $arr;
     private ?string $close = null;
     private ?string $inner = '';
 
-    public function __construct(string $tagname)
-    {
-        $this->tagname = $tagname;
-        $this->arr     = new ArrElement();
+    public function __construct(
+        private readonly string $tagname
+    ) {
+        $this->arr = new ArrElement();
 
-        if (VoidElement::isVoid($tagname)) {
+        if (VoidElement::isVoid($this->tagname)) {
             $this->close = ' /';
             $this->inner = null;
         }
     }
 
-    public function addChild(IGetElement $e): self
+    public function addChild(IGetElement $e): static
     {
         if ($this->inner === null) {
             return $this;
@@ -32,16 +31,16 @@ class CreateElement implements IElement
         $i->append($e->getElement());
 
         return $this;
-    } 
+    }
 
-    public function setAttribute(string $name, mixed $value = null): self
+    public function setAttribute(string $name, mixed $value = null): static
     {
         $attr = new AttributeElement($name, $value);
         $a = $this->arr->get('attr');
         $a->append($attr->getAttribute());
 
         return $this;
-    } 
+    }
 
     public function getElement(): string
     {
@@ -60,7 +59,7 @@ class CreateElement implements IElement
 
         $result = (array) $this->arr->get('element');
         return implode('', $result);
-    } 
+    }
 
     private function compileAttributes(): void
     {
